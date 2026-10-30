@@ -11,14 +11,18 @@ builder.Services.AddDbContext<CollegeDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSekaiADOGen();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSekaiADO();
+    app.UseSekaiADOUI(c =>
+    {
+        c.RoutePrefix = "sekaiADO";
+        c.SekaiADOEndpoint("/sekaiADO/v1/sekaiADO.json", "College API v1");
+    });
 }
 
 app.UseStaticFiles();
